@@ -88,6 +88,8 @@ Web server configuration (Apache)
 Monitoring concepts and alerting
 Troubleshooting dependency and path issues
 Documentation and project scoping
+
+Nagios web interface showing service status##
 <img width="1912" height="1012" alt="Nagios Web Interface" src="https://github.com/user-attachments/assets/daee62d9-a6c0-4109-82b2-23d1887392ef" />
 <img width="1913" height="850" alt="Captura de pantalla 2026-01-07 155147" src="https://github.com/user-attachments/assets/1586a423-8c03-4679-99be-3511a394e8ad" />
 <img width="1918" height="867" alt="Captura de pantalla 2026-01-07 154620" src="https://github.com/user-attachments/assets/b98b245a-5602-4fdb-b13d-f238f308bc7e" />
