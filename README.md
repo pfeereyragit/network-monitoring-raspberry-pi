@@ -1,66 +1,53 @@
-# network-monitoring-raspberry-pi
-Basic network monitoring system using Raspberry Pi and Nagios Core
-Network Monitoring System – Raspberry Pi & Nagios
-Built a Network Monitoring System using Raspberry Pi and Nagios Core as a learning project.**
-Focused on Linux administration, networking, and troubleshooting real dependency and connectivity issues.
-Objective:
-Monitor network devices (latency, availability and basic traffic)
-using a Raspberry Pi and Nagios Core.
-Step 1 – Initial Setup
-- IP address obtained via Network Manager GUI (Graphical User Interface)
-- Initial access via GUI
-- Network configuration using Wi-Fi
-- Headless access configured via SSH
-- Raspberry Pi accessed remotely over Wi-Fi (192.168.1.156)
-- IP address assigned dynamically (DHCP – Dynamic Host Configuration Protocol)
-Step 2 – System Preparation
-- System updated using apt
-- SSH access verified from remote host
-Step 3 – Network Configuration (Static IP)
-Durante esta etapa se intentó configurar una IP estática en la interfaz Wi-Fi utilizando NetworkManager.
-El primer intento provocó pérdida de conectividad, por lo que se volvió temporalmente a DHCP desde la GUI.
-Posteriormente, la IP estática fue configurada correctamente vía nmcli manteniendo la conectividad por SSH.
-Estado final: IP estática configurada y operativa.
-Network managed by NetworkManager
-Initial static IP configuration caused temporary Wi-Fi connectivity loss
-Configuration reverted to DHCP via GUI to restore access
-Static IP successfully reconfigured using nmcli over SSH
-Wi-Fi connectivity maintained during reconfiguration
-Raspberry Pi now uses a static IP (192.168.1.156)
-Step 4 – Pre-Installation Checks & System Preparation
-Before installing Nagios Core, the system was verified and prepared to ensure
-network connectivity and required dependencies were available.
-Internet connectivity verified using ICMP (ping)
-DNS resolution confirmed
-System package index updated using apt
-Required build, web server, PHP and SSL dependencies installed
-System prepared for Nagios Core compilation and web interface
-During dependency installation, package downloads failed due to unreachable mirrors and IPv6 connectivity issues.
-The issue was resolved by forcing APT to use IPv4, restoring reliable package downloads.
-Step 5 – Nagios Core Installation and Service Initialization
-Nagios Core was compiled and installed from source on the Raspberry Pi.
-The installation included system integration, Apache web configuration,
-and service initialization using systemd.
-Nagios Core source code downloaded and extracted
-Configuration completed successfully after resolving missing SSL headers
-Nagios Core compiled and installed from source
-Dedicated Nagios user and command group configured
-Apache modules (CGI and rewrite) enabled for Nagios web interface
-Web authentication configured using htpasswd
-Nagios service started and enabled at boot
-Web interface successfully accessed via browser
-At this stage, Nagios Core is running correctly.
-Local host service checks report alerts due to missing plugins,
-which will be addressed in the next step.
+             Network Monitoring System: Raspberry Pi & Nagios Core
 
 
+This project involves the implementation of a robust Network Monitoring System using a Raspberry Pi and Nagios Core. It was designed as a learning project to master Linux administration, networking, and real-world troubleshooting of dependencies and connectivity.
 
 
-Step 6 – Troubleshooting and Resolution
-Nagios Core was compiled from source, while monitoring plugins were installed via system packages.
-This caused plugin execution failures due to mismatched plugin paths.
-The issue was identified through service error messages in the Nagios web interface.
-Resolved by aligning plugin execution paths using symbolic links.
+🎯 Objectives
+• Active Monitoring: Supervise network devices for latency, availability, and basic traffic metrics.
+• Infrastructure: Deploy a dedicated monitoring server on low-cost hardware (Raspberry Pi).
+• Service Management: Configure an automated environment that ensures high availability of the monitoring service itself.
+🛠️ Tech Stack & Skills
+• OS: Linux (Debian-based/Raspberry Pi OS).
+• Monitoring Tool: Nagios Core (Compiled from source).
+• Web Server: Apache (CGI, rewrite modules).
+• Networking: Static IP configuration, SSH, ICMP, DNS resolution, DHCP,.
+• Security/Admin: htpasswd authentication, systemd service management, and nmcli,.
+🚀 Implementation Highlights
+1. Network & Access Optimization
+The project transitioned from a standard GUI-based DHCP setup to a professional headless configuration.
+• Challenge: An initial attempt to set a static IP via the Network Manager GUI caused a total loss of connectivity.
+• Solution: Reverted to DHCP to restore access, then successfully utilized the nmcli command-line tool to configure the static IP (192.168.1.156) while maintaining an active SSH session,.
+2. System Hardening & Dependency Management
+Before installation, the environment was audited for reliability:
+• Connectivity Verification: Confirmed internet access and DNS resolution via ICMP (ping).
+• Advanced Troubleshooting: Resolved package download failures caused by unreachable mirrors and IPv6 issues by forcing APT to utilize IPv4, ensuring a stable dependency installation.
+3. Source-Code Installation of Nagios Core
+To gain a deeper understanding of system integration, Nagios Core was compiled and installed from source rather than using a package manager.
+• Configuration: Created dedicated Nagios users/groups and configured Apache with web authentication via htpasswd.
+• Persistence: Integrated the service with systemd to ensure Nagios starts automatically at boot,.
+🔍 Troubleshooting (The "Portfolio" Highlight)
+A critical part of this project was resolving service-level errors post-installation:
+• The Issue: Nagios reported "CRITICAL" alerts for local services because monitoring plugins (installed via system packages) were not in the directory expected by the source-compiled Nagios Core.
+• The Resolution: Identified the path mismatch through service error messages in the web interface and resolved it by aligning plugin execution paths using symbolic links. This transitioned all monitored services from "CRITICAL" to "OK",.
+📊 Monitoring Scope
+Feature
+Description
+ICMP Connectivity
+Ping monitoring for device availability.
+HTTP Service
+Monitoring availability of web services.
+Disk Usage
+Local system health and storage alerts.
+External Connectivity
+Testing outbound access (Ping to Google DNS).
+🖼️ Evidence of Work
+The system is fully operational, as evidenced by the Nagios dashboard showing active services and the systemctl status confirming the service is active and enabled,.
+
+--------------------------------------------------------------------------------
+Portfolio Note: This project demonstrates my ability to handle end-to-end system deployments, from physical hardware configuration to solving complex path-dependency issues in a Linux environment.
+
 
 
 
