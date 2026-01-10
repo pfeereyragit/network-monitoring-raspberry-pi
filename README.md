@@ -2,80 +2,90 @@
 
 
 This project involves the implementation of a robust Network Monitoring System using a Raspberry Pi and Nagios Core. It was designed as a learning project to master Linux administration, networking, and real-world troubleshooting of dependencies and connectivity.
+Raspberry Pi and Nagios: System State Monitoring and Control
 
+This documentation details the implementation of a network monitoring system using a Raspberry Pi and Nagios Core software. The process covers everything from initial hardware setup and assigning a static IP address, to preparing the Linux environment with dependencies such as Apache, PHP, and SSL.
+It describes the resolution of critical issues, such as IPv6 connectivity errors and fixing execution paths using symbolic links so that plugins would work correctly.
+The project demonstrates skills in server administration and monitoring essential services such as latency and disk status. This technical guide serves as evidence of a complete workflow that combines source code installation, network management, and system troubleshooting.
 
-🎯 Objectives
-• Active Monitoring: Supervise network devices for latency, availability, and basic traffic metrics.
-• Infrastructure: Deploy a dedicated monitoring server on low-cost hardware (Raspberry Pi).
-• Service Management: Configure an automated environment that ensures high availability of the monitoring service itself.
-🛠️ Tech Stack & Skills
-• OS: Linux (Debian-based/Raspberry Pi OS).
-• Monitoring Tool: Nagios Core (Compiled from source).
-• Web Server: Apache (CGI, rewrite modules).
-• Networking: Static IP configuration, SSH, ICMP, DNS resolution, DHCP,.
-• Security/Admin: htpasswd authentication, systemd service management, and nmcli,.
-🚀 Implementation Highlights
-1. Network & Access Optimization
-The project transitioned from a standard GUI-based DHCP setup to a professional headless configuration.
-• Challenge: An initial attempt to set a static IP via the Network Manager GUI caused a total loss of connectivity.
-• Solution: Reverted to DHCP to restore access, then successfully utilized the nmcli command-line tool to configure the static IP (192.168.1.156) while maintaining an active SSH session,.
-2. System Hardening & Dependency Management
-Before installation, the environment was audited for reliability:
-• Connectivity Verification: Confirmed internet access and DNS resolution via ICMP (ping).
-• Advanced Troubleshooting: Resolved package download failures caused by unreachable mirrors and IPv6 issues by forcing APT to utilize IPv4, ensuring a stable dependency installation.
-3. Source-Code Installation of Nagios Core
-To gain a deeper understanding of system integration, Nagios Core was compiled and installed from source rather than using a package manager.
-• Configuration: Created dedicated Nagios users/groups and configured Apache with web authentication via htpasswd.
-• Persistence: Integrated the service with systemd to ensure Nagios starts automatically at boot,.
-🔍 Troubleshooting (The "Portfolio" Highlight)
-A critical part of this project was resolving service-level errors post-installation:
-• The Issue: Nagios reported "CRITICAL" alerts for local services because monitoring plugins (installed via system packages) were not in the directory expected by the source-compiled Nagios Core.
-• The Resolution: Identified the path mismatch through service error messages in the web interface and resolved it by aligning plugin execution paths using symbolic links. This transitioned all monitored services from "CRITICAL" to "OK",.
-📊 Monitoring Scope
-Feature
-Description
-ICMP Connectivity
-Ping monitoring for device availability.
-HTTP Service
-Monitoring availability of web services.
-Disk Usage
-Local system health and storage alerts.
-External Connectivity
-Testing outbound access (Ping to Google DNS).
-🖼️ Evidence of Work
-The system is fully operational, as evidenced by the Nagios dashboard showing active services and the systemctl status confirming the service is active and enabled,.
+Initial Configuration and Remote Access
 
---------------------------------------------------------------------------------
-Portfolio Note: This project demonstrates my ability to handle end-to-end system deployments, from physical hardware configuration to solving complex path-dependency issues in a Linux environment.
+Hardware preparation is the first critical step for the environment.
 
+• Initial access: Done using a monitor and keyboard (GUI), but the goal is remote access via SSH.
+• Network management: NetworkManager is used (a Linux service to manage connections) both through its graphical interface and via terminal.
+• Static IP configuration:
+◦ Problem: Trying to set the IP from the GUI caused loss of connectivity.
+◦ Solution: nmcli (NetworkManager command-line interface) was used to configure the static IP (192.168.1.156) while keeping the SSH session active.
 
+Note:
+nmcli allows advanced network changes without relying on a graphical interface, which is essential on servers.
 
+System Preparation and Dependencies
 
-Monitoring Scope
-Implemented monitoring checks focused on availability and basic system health:
-ICMP connectivity (Ping)
-HTTP service availability
-Disk usage monitoring
-External connectivity test (Ping to Google DNS)
-Out-of-scope:
-Advanced performance tuning
-Full traffic analysis
-Enterprise-scale monitoring
-SIEM or intrusion detection
+Before installing Nagios, the system must be validated and updated:
 
+• Maintenance: Using apt update and apt upgrade to ensure that the package index and the software are up to date.
+• Connectivity tests:
+◦ ICMP (ping): To verify that the host has network access.
+◦ DNS resolution: Confirm that the system translates domain names (like google.com) into IP addresses.
 
+Software stack:
+◦ Apache: Web server that loads the Nagios interface.
+◦ PHP: Generates dynamic content (states, tables, alerts).
+◦ SSL/TLS: Security protocol that encrypts communication and protects login credentials.
 
+Note:
+The “package index” can be understood as a catalog that shows which programs exist, which versions are available, and where to download them from.
 
-Skills Demonstrated
-Linux system administration (Debian-based)
-SSH remote administration
-Network configuration (DHCP / Static IP)
-Service installation and management (systemd)
-Web server configuration (Apache)
-Monitoring concepts and alerting
-Troubleshooting dependency and path issues
-Documentation and project scoping
+Installation Troubleshooting
 
+A key part of the project was resolving errors during dependency downloads:
+
+• Mirror errors and IPv6: Downloads were failing because mirror servers were not accessible over IPv6.
+
+Note:
+The system’s internet protocol was not changed; instead, APT was forced to use IPv4 to stabilize downloads.
+
+Nagios Core Installation
+
+Unlike other software, Nagios Core was installed by compiling from source code.
+
+• Process: Downloading the code, extracting it, configuring it, and running the make and make install commands.
+• Integration: It was configured as a service managed by systemd so it starts automatically with the system.
+• Security: A dedicated user (nagios) was created, Apache modules (cgi, rewrite) were enabled, and password authentication (htpasswd) was configured for the web panel.
+
+Note:
+Compiling from source means downloading the program as text, converting it into an executable, and then installing it manually.
+
+Note:
+A dedicated user is a system user created only for the program to run, not for people to log in, and with limited permissions.
+
+The Plugin Challenge and Symbolic Links
+
+The most important error occurred after installation: Nagios worked, but service checks failed (CRITICAL state).
+
+• Cause: Installation method conflict. Nagios Core was installed manually from source, but the plugins were installed via apt (system packages). This caused a mismatch in execution paths.
+
+Note:
+Nagios was looking for the plugins in one folder, but the plugins were in another.
+
+• Solution: Symbolic links were created to align the paths. This allowed Nagios to find the plugins where it expected them, without reinstalling all the software.
+
+Note:
+A symbolic link is like a “shortcut” that points to another file or folder.
+
+• Result: Services changed from an error state to “OK” once the paths were fixed.
+
+Summary of Demonstrated Skills
+
+Linux administration: User management, services (systemd), and software compilation.
+
+Networking: Static IP configuration, DNS resolution, and ICMP diagnostics.
+
+Web security: SSL implementation and htpasswd authentication.
+
+Troubleshooting: Error diagnosis through web interface messages and fixing file system paths.
 Nagios web interface showing service status##
 <img width="1912" height="1012" alt="Nagios Web Interface" src="https://github.com/user-attachments/assets/daee62d9-a6c0-4109-82b2-23d1887392ef" />
 Services transitioning from CRITICAL to OK (initial plugin path mismatch) Before##
